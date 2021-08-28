@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./docker/api/Dockerfile.api
+    tty: true
+    volumes:
+      - .:/app
+    stdin_open: true
+  
