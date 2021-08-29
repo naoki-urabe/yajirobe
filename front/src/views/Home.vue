@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       summary: "",
-      income: 0,
+      income: null,
       category: "",
       categories: [{category_code:"burn",category_name:"浪費"}, {category_code:"food",category_name:"食費"}, {category_code:"car",category_name:"車"}],
     };
@@ -44,7 +44,7 @@ export default {
       );
       console.log(response);
       this.summary = "";
-      this.income = 0;
+      this.income = null;
       this.category = "";
     },
   },
