@@ -1,7 +1,7 @@
 package models
 
 import (
-	"fmt"
+	_ "fmt"
 	"time"
 )
 
