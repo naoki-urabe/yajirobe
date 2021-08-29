@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS incomes(
+    id SERIAL PRIMARY KEY,
+    dt DATETIME NOT NULL,
+    summary VARCHAR(200) NOT NULL,
+    income INT NOT NULL,
+    tag VARCHAR(200) NOT NULL
+);

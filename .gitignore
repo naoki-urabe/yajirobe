@@ -1,0 +1,3 @@
+.env.dev.db
+backend/db/mysql_data
+backend/config.ini
