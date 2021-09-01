@@ -8,4 +8,4 @@ CREATE TABLE IF NOT EXISTS incomes(
 CREATE TABLE IF NOT EXISTS categories(
     category_code VARCHAR(20) PRIMARY KEY,
     category_name VARCHAR(20) NOT NULL
-)
+);
