@@ -5,3 +5,7 @@ CREATE TABLE IF NOT EXISTS incomes(
     income INT NOT NULL,
     tag VARCHAR(200) NOT NULL
 );
+CREATE TABLE IF NOT EXISTS categories(
+    category_code VARCHAR(20) PRIMARY KEY,
+    category_name VARCHAR(20) NOT NULL
+);
