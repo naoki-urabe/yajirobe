@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"log"
-	"yajirobe/models"
-	"net/http"
 	"encoding/json"
 	"io/ioutil"
+	"log"
+	"net/http"
+	"yajirobe/models"
 )
 
 var addCategory = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
