@@ -16,6 +16,10 @@
         </v-col>
       </v-row>
     </v-container>
+    <v-card>
+    <v-data-table :headers="headers" :items="incomes" :items-per-page="20">
+    </v-data-table>
+    </v-card>
   </v-app>
 </template>
 <script>
@@ -28,6 +32,13 @@ export default {
       income: null,
       category: "",
       categories: [],
+      incomes:[],
+      headers: [
+        {text:"取引日", value: "dt"},
+        {text:"名目", value: "summary"},
+        {text:"取引額", value: "income"},
+        {text:"カテゴリ", value: "tag"},
+      ]
     };
   },
   methods: {
@@ -47,11 +58,20 @@ export default {
       this.income = null;
       this.category = "";
     },
+    getAllCategories: async function() {
+      const response = await axios.get("http://localhost:8080/api/category/all")
+      return response.data
+    },
+    getIncomes: async function() {
+      const response = await axios.get("http://localhost:8080/api/income/all")
+      return response.data
+    }
   },
   mounted: async function() {
-    const response = await axios.get("http://localhost:8080/api/category/all")
-    this.categories = response.data;
+    this.categories = await this.getAllCategories()
+    this.incomes = await this.getIncomes()
     console.log(this.categories);
+    console.log(this.incomes)
   }
 };
 </script>

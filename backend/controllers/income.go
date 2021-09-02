@@ -26,3 +26,14 @@ var addIncome = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Write(responseBody)
 })
+
+var getAllIncomes = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	var incomes []models.Income
+	models.GetAllIncomes(&incomes)
+	responseBody, err := json.Marshal(incomes)
+	if err != nil {
+		log.Fatal(err)
+	}
+	w.Write(responseBody)
+})
