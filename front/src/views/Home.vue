@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-app id="app">
     <v-container>
       <v-row>
         <v-col cols="3">
@@ -16,7 +16,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </div>
+  </v-app>
 </template>
 <script>
 import axios from "axios"
@@ -27,7 +27,7 @@ export default {
       summary: "",
       income: null,
       category: "",
-      categories: [{category_code:"burn",category_name:"浪費"}, {category_code:"food",category_name:"食費"}, {category_code:"car",category_name:"車"}],
+      categories: [],
     };
   },
   methods: {
@@ -48,5 +48,10 @@ export default {
       this.category = "";
     },
   },
+  mounted: async function() {
+    const response = await axios.get("http://localhost:8080/api/category/all")
+    this.categories = response.data;
+    console.log(this.categories);
+  }
 };
 </script>

@@ -25,3 +25,14 @@ var addCategory = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) 
 	}
 	w.Write(responseBody)
 })
+
+var getAllCategories = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	var categories []models.Category
+	models.GetAllCategories(&categories)
+	responseBody, err := json.Marshal(categories)
+	if err != nil {
+		log.Fatal(err)
+	}
+	w.Write(responseBody)
+})
