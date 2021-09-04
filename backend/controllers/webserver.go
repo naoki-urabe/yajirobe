@@ -12,6 +12,7 @@ func StartWebServer() error {
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/api/income/add", addIncome)
 	router.HandleFunc("/api/income/all", getAllIncomes)
+	router.HandleFunc("/api/income/latest", getLatestIncome)
 	router.HandleFunc("/api/category/add", addCategory)
 	router.HandleFunc("/api/category/all", getAllCategories)
 	fmt.Println("Listening port:8080...")

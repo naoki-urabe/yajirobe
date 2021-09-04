@@ -29,11 +29,10 @@ export default{
                 category_name: this.categoryName,
                 category_code: this.categoryCode
             }
-            const response = await axios.post(
+            await axios.post(
                 "http://localhost:8080/api/category/add",
                 bodyParameters
             )
-            console.log(response);
             this.categoryName = "";
             this.categoryCode = "";
         }
