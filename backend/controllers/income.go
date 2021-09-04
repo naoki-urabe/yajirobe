@@ -37,3 +37,15 @@ var getAllIncomes = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request
 	}
 	w.Write(responseBody)
 })
+
+var getLatestIncome = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	var income models.Income
+	models.GetLatestIncome(&income)
+	responseBody, err := json.Marshal(income)
+	if err != nil {
+		log.Fatal(err)
+	}
+	w.Write(responseBody)
+
+})
