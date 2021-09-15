@@ -1,6 +1,7 @@
 <template>
   <v-app id="app">
     <v-container>
+      <Chart />
       <v-row>
         <v-col cols="3">
           <v-text-field label="摘要" v-model="summary" />
@@ -29,7 +30,11 @@
 </template>
 <script>
 import axios from "axios";
+import Chart from "@/components/Chart";
 export default {
+  components: {
+    Chart,
+  },
   name: "Home",
   data() {
     return {

@@ -1,10 +1,7 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <AppBar />
+    <router-view />
   </div>
 </template>
 
@@ -30,3 +27,12 @@
   }
 }
 </style>
+<script>
+import AppBar from "@/components/AppBar"
+  export default {
+    components: {
+      AppBar,
+    },
+    name: 'App'
+  }
+</script>
