@@ -10,6 +10,8 @@ services:
     stdin_open: true
     depends_on:
       - mysql
+    ports:
+      - 8080:8080
   front:
     build:
       context: .
