@@ -24,15 +24,17 @@ export default {
   methods: {
     async login() {
       try {
-        await this.$auth.login({
-          url: "http://localhost:8080/api/auth/login",
-          data: {
-            Id: this.id,
-            Pw: this.password
-          },
-        }).then((response)=>{
-          this.$auth.token(null,response.data,false);
-        })
+        await this.$auth
+          .login({
+            url: "http://localhost:8080/api/auth/login",
+            data: {
+              Id: this.id,
+              Pw: this.password,
+            },
+          })
+          .then((response) => {
+            this.$auth.token(null, response.data, false);
+          });
       } catch (error) {
         console.log(error);
       }
