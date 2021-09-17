@@ -14,6 +14,7 @@ import driverOAuth2Facebook  from '@websanova/vue-auth/dist/drivers/oauth2/faceb
 driverOAuth2Google.params.client_id = '547886745924-4vrbhl09fr3t771drtupacct6f788566.apps.googleusercontent.com';
 driverOAuth2Facebook.params.client_id = '196729390739201';
 
+axios.defaults.baseURL = 'http://localhost:50523/api'
 Vue.use(VueAxios, axios)
 Vue.router = router
 Vue.use(auth, {

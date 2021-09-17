@@ -8,7 +8,7 @@
           <v-text-field v-model="password" label="PASSWORD"></v-text-field>
           <v-btn @click="login">submit</v-btn>
         </v-col>
-        <v-btn href="http://localhost:3001/register-user">新規ユーザ登録</v-btn>
+        <v-btn href="http://localhost:56294/register-user">新規ユーザ登録</v-btn>
       </v-container>
     </center>
   </v-form>
@@ -26,7 +26,7 @@ export default {
       try {
         await this.$auth
           .login({
-            url: "http://localhost:8080/api/auth/login",
+            url: "/auth/login",
             data: {
               Id: this.id,
               Pw: this.password,
