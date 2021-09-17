@@ -11,7 +11,7 @@ func StartWebServer() error {
 	models.ConnectDb()
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/api/auth/login", login)
-	router.HandleFunc("/api/user/register", registerUser)
+	//router.HandleFunc("/api/user/register", registerUser)
 	incomeRouter := router.PathPrefix("/api/income").Subrouter()
 	incomeRouter.HandleFunc("/add", addIncome)
 	incomeRouter.HandleFunc("/all", getAllIncomes)
