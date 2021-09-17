@@ -59,7 +59,7 @@ export default {
         income: parseInt(this.income),
         tag: this.category,
       };
-      await axios.post("http://localhost:8080/api/income/add", bodyParameter);
+      await axios.post("/income/add", bodyParameter);
       const latestIncome = await this.getLatestIncome();
       this.updateIncomes(latestIncome);
       this.summary = "";
@@ -76,17 +76,17 @@ export default {
     },
     getAllCategories: async function() {
       const response = await axios.get(
-        "http://localhost:8080/api/category/all"
+        "/category/all"
       );
       return response.data;
     },
     getIncomes: async function() {
-      const response = await axios.get("http://localhost:8080/api/income/all");
+      const response = await axios.get("/income/all");
       return response.data;
     },
     getLatestIncome: async function() {
       const response = await axios.get(
-        "http://localhost:8080/api/income/latest"
+        "/income/latest"
       );
       return response.data;
     },

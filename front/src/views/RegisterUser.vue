@@ -24,7 +24,7 @@ export default {
     register: async function () {
       await axios({
         method: "post",
-        url: "http://localhost:8080/api/user/register",
+        url: "/user/register",
         data: {
           id: this.id,
           pw: this.password,

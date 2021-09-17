@@ -11,7 +11,7 @@ services:
     depends_on:
       - mysql
     ports:
-      - 8080:8080
+      - 50523:50523
   front:
     build:
       context: .
@@ -20,12 +20,12 @@ services:
     volumes:
       - .:/app
     ports:
-      - 3000:3000
+      - 56294:56294
   mysql:
     image: mysql:8.0.26
     restart: always
     ports:
-      - 3306:3306
+      - 58524:58524
     volumes:
       - ./backend/db/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./backend/db/mysql_data:/var/lib/mysql

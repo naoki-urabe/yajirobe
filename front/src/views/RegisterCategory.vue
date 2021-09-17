@@ -30,7 +30,7 @@ export default{
                 category_code: this.categoryCode
             }
             await axios.post(
-                "http://localhost:8080/api/category/add",
+                "/category/add",
                 bodyParameters
             )
             this.categoryName = "";
