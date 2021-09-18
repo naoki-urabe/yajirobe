@@ -5,6 +5,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"log"
+	"time"
 	"yajirobe/config"
 )
 
@@ -20,10 +21,14 @@ func ConnectDb() {
 		config.Config.DbPort,
 		config.Config.DbName,
 	)
-	Db, err = sqlx.Connect("mysql", dbConnectInfo)
-	if err != nil {
-		log.Fatalln(err)
-	} else {
-		fmt.Println("Successfully connect database...")
+	for i := 0; i < 10; i++ {
+		time.Sleep(30 * time.Second)
+		Db, err = sqlx.Connect("mysql", dbConnectInfo)
+		if err != nil {
+			log.Fatalln(err)
+		} else {
+			break
+		}
 	}
+	fmt.Println("Successfully connect database...")
 }

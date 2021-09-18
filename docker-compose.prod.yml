@@ -1,0 +1,34 @@
+version: '3.7'
+services:
+  backend_prod:
+    image: ghcr.io/naoki-urabe/yajirobe/api:prod
+    tty: true
+    stdin_open: true
+    depends_on:
+      - mysql_prod
+    ports:
+      - 50534:50534
+    env_file:
+      .env.prod.api
+  front_prod:
+    image: ghcr.io/naoki-urabe/yajirobe/front:prod
+    tty: true
+    ports:
+      - 56294:56294
+    env_file:
+      .env.prod.front
+  task:
+    image: ghcr.io/naoki-urabe/yajirobe/task:prod
+    tty: true
+    depends_on:
+      - mysql_prod
+    env_file:
+      .env.prod.api
+  mysql_prod:
+    image: mysql:8.0.26
+    restart: always
+    ports:
+      - 54923:54923
+    volumes:
+      - ./backend/db/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    env_file: .env.prod.db

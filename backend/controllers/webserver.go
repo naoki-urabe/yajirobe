@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
+	"yajirobe/config"
 	"yajirobe/models"
 )
 
@@ -11,7 +12,7 @@ func StartWebServer() error {
 	models.ConnectDb()
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/api/auth/login", login)
-	//router.HandleFunc("/api/user/register", registerUser)
+	router.HandleFunc("/api/user/register", registerUser)
 	incomeRouter := router.PathPrefix("/api/income").Subrouter()
 	incomeRouter.HandleFunc("/add", addIncome)
 	incomeRouter.HandleFunc("/all", getAllIncomes)
@@ -21,6 +22,6 @@ func StartWebServer() error {
 	categoryRouter.HandleFunc("/add", addCategory)
 	categoryRouter.HandleFunc("/all", getAllCategories)
 	categoryRouter.Use(validateJWTMiddleware)
-	fmt.Println("Listening port:50523...")
-	return http.ListenAndServe(fmt.Sprintf(":%d", 50523), router)
+	fmt.Printf("Listening port:%s...", config.Config.ApiPort)
+	return http.ListenAndServe(fmt.Sprintf(":%s", config.Config.ApiPort), router)
 }
