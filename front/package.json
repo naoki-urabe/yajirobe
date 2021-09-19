@@ -5,13 +5,17 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build-dev": "vue-cli-service build --mode development",
+    "build-prod": "vue-cli-service build --mode production",
+    "lint": "vue-cli-service lint",
+    "start": "node --inspect server.js"
   },
   "dependencies": {
     "@websanova/vue-auth": "^4.1.4",
     "axios": "^0.21.1",
     "chart.js": "^2.9.4",
     "core-js": "^3.6.5",
+    "express": "^4.17.1",
     "vue": "^2.6.11",
     "vue-axios": "^3.2.5",
     "vue-chartjs": "^3.5.1",

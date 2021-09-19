@@ -1,3 +1,11 @@
+.env.dev.api
 .env.dev.db
+.env.dev.front
+.env.prod.api
+.env.prod.db
+.env.prod.front
+.env.development
+.env.production
 backend/db/mysql_data
 backend/config.ini
+yajirobe
