@@ -2,7 +2,7 @@ name: CI/CD
 on:
   push:
     branches:
-      - set-config-for-deployment
+      - master
 env:
   API_IMAGE: ghcr.io/naoki-urabe/yajirobe/api:prod
   FRONT_IMAGE: ghcr.io/naoki-urabe/yajirobe/front:prod
