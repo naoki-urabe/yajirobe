@@ -37,10 +37,12 @@ jobs:
           echo DB_PORT=54923 >> .env.prod.api
       - name: Add environment variable to .env.prod.front
         run: |
+          echo VUE_APP_HOST="${{ secrets.API_HOST }}" >> .env.production
           echo VUE_APP_API_PORT=50534 >> front/.env.production
           echo VUE_APP_FRONT_PORT=56294 >> front/.env.production
       - name: Add environment variable to .env.prod.front
         run: |
+          echo VUE_APP_HOST="${{ secrets.API_HOST }}" >> .env.prod.front
           echo VUE_APP_API_PORT=50534 >> .env.prod.front
           echo VUE_APP_FRONT_PORT=56294 >> .env.prod.front
       - name: Log in to Github packages

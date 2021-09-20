@@ -17,7 +17,7 @@
 export default {
   data() {
     return {
-      registerUserURL: `http://localhost:${process.env.VUE_APP_FRONT_PORT}/register-user`,
+      registerUserURL: `http://${process.env.VUE_APP_HOST}:${process.env.VUE_APP_FRONT_PORT}/register-user`,
       id: "",
       password: "",
     };
