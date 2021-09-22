@@ -111,11 +111,11 @@ func login(w http.ResponseWriter, r *http.Request) {
 	os.Setenv("PUBLICKEY", publicKey)
 	type Response struct {
 		Token string `json:"token"`
-		User string `json:"user"`
+		User  string `json:"user"`
 	}
 	response := Response{
 		Token: getTokenHandler(privateKey),
-		User: user.Id,
+		User:  user.Id,
 	}
 	json, _ := json.Marshal(response)
 	w.Write(json)

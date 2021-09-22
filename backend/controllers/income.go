@@ -9,6 +9,10 @@ import (
 	"yajirobe/models"
 )
 
+type User struct {
+	User string
+}
+
 var addIncome = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 	if (*r).Method == "OPTIONS" {
@@ -29,8 +33,13 @@ var addIncome = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 var getAllIncomes = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
+	reqBody, err := ioutil.ReadAll(r.Body)
+	var user User
+	if err := json.Unmarshal(reqBody, &user); err != nil {
+		panic(err)
+	}
 	var incomes []models.Income
-	models.GetAllIncomes(&incomes)
+	models.GetAllIncomes(user.User, &incomes)
 	responseBody, err := json.Marshal(incomes)
 	if err != nil {
 		log.Fatal(err)
@@ -40,8 +49,13 @@ var getAllIncomes = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request
 
 var getLatestIncome = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
+	reqBody, err := ioutil.ReadAll(r.Body)
+	var user User
+	if err := json.Unmarshal(reqBody, &user); err != nil {
+		panic(err)
+	}
 	var income models.Income
-	models.GetLatestIncome(&income)
+	models.GetLatestIncome(user.User, &income)
 	responseBody, err := json.Marshal(income)
 	if err != nil {
 		log.Fatal(err)

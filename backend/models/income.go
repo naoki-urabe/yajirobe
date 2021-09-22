@@ -6,14 +6,14 @@ import (
 )
 
 var addIncomeQuery = `
-INSERT INTO incomes (dt,summary,income,tag) VALUES(?,?,?,?);
+INSERT INTO incomes (dt,summary,income,tag,user) VALUES(?,?,?,?,?);
 `
 
 var getAllIncomesQuery = `
-SELECT * FROM incomes;`
+SELECT * FROM incomes WHERE user = ?;`
 
 var getLatestIncomeQuery = `
-SELECT * FROM incomes ORDER BY dt DESC LIMIT 1;
+SELECT * FROM incomes WHERE user = ? ORDER BY dt DESC LIMIT 1;
 `
 
 type Income struct {
@@ -22,6 +22,7 @@ type Income struct {
 	Summary string    `db:"summary" json:"summary"`
 	Income  int       `db:"income" json:"income"`
 	Tag     string    `db:"tag" json:"tag"`
+	User    string    `db:"user" json:"user"`
 }
 
 type NewIncome struct {
@@ -29,16 +30,17 @@ type NewIncome struct {
 	Summary string    `db:"summary" json:"summary"`
 	Income  int       `db:"income" json:"income"`
 	Tag     string    `db:"tag" json:"tag"`
+	User    string    `db:"user" json:"user"`
 }
 
 func AddIncome(newIncome *NewIncome) {
-	Db.MustExec(addIncomeQuery, newIncome.Dt, newIncome.Summary, newIncome.Income, newIncome.Tag)
+	Db.MustExec(addIncomeQuery, newIncome.Dt, newIncome.Summary, newIncome.Income, newIncome.Tag, newIncome.User)
 }
 
-func GetAllIncomes(incomes *[]Income) {
-	Db.Select(incomes, getAllIncomesQuery)
+func GetAllIncomes(user string, incomes *[]Income) {
+	Db.Select(incomes, getAllIncomesQuery, user)
 }
 
-func GetLatestIncome(income *Income) {
-	Db.Get(income, getLatestIncomeQuery)
+func GetLatestIncome(user string, income *Income) {
+	Db.Get(income, getLatestIncomeQuery, user)
 }
