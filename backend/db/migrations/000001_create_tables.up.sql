@@ -9,7 +9,8 @@ CREATE TABLE IF NOT EXISTS incomes(
     dt DATETIME NOT NULL,
     summary VARCHAR(200) NOT NULL,
     income INT NOT NULL,
-    tag VARCHAR(200) NOT NULL
+    tag VARCHAR(200) NOT NULL,
+    user VARCHAR(20) NOT NULL
 );
 CREATE TABLE IF NOT EXISTS categories(
     category_code VARCHAR(20) PRIMARY KEY,

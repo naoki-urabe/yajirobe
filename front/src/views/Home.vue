@@ -58,6 +58,7 @@ export default {
         summary: this.summary,
         income: parseInt(this.income),
         tag: this.category,
+        user: this.$auth.user().id
       };
       await axios.post("/income/add", bodyParameter);
       const latestIncome = await this.getLatestIncome();
@@ -81,12 +82,18 @@ export default {
       return response.data;
     },
     getIncomes: async function() {
-      const response = await axios.get("/income/all");
+      const bodyParameter = {
+        user: this.$auth.user().id
+      };
+      const response = await axios.post("/income/all",bodyParameter);
       return response.data;
     },
     getLatestIncome: async function() {
-      const response = await axios.get(
-        "/income/latest"
+      const bodyParameter = {
+        user: this.$auth.user().id
+      };
+      const response = await axios.post(
+        "/income/latest",bodyParameter
       );
       return response.data;
     },
