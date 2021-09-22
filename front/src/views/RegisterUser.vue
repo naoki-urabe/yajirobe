@@ -7,6 +7,7 @@
         <v-text-field v-model="password" label="PASSWORD"></v-text-field>
         <v-btn @click="register">submit</v-btn>
       </v-col>
+      <v-btn href="/">戻る</v-btn>
     </v-container>
   </center>
 </template>
