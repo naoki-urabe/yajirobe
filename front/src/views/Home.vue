@@ -1,5 +1,6 @@
 <template>
   <v-app id="app">
+  <p>{{ username }}さんの家計簿</p>
     <v-container>
       <Chart />
       <v-row>
@@ -49,6 +50,7 @@ export default {
         { text: "取引額", value: "income" },
         { text: "カテゴリ", value: "tag" },
       ],
+      username: ""
     };
   },
   methods: {
@@ -101,6 +103,7 @@ export default {
   mounted: async function() {
     this.categories = await this.getAllCategories();
     this.incomes = await this.getIncomes();
+    this.username = this.$auth.user().id
   },
 };
 </script>
