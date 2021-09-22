@@ -34,7 +34,8 @@ export default {
             },
           })
           .then((response) => {
-            this.$auth.token(null, response.data, false);
+            this.$auth.user({id: response.data.user})
+            this.$auth.token(null, response.data.token, false);
           });
       } catch (error) {
         console.log(error);
