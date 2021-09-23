@@ -5,4 +5,4 @@ RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.11.0/
     && mv ./migrate.linux-amd64 /usr/bin/migrate
 WORKDIR /app
 COPY backend/db /app
-CMD bash -c "sleep 20s && ls && migrate -database  $DB_DRIVER_NAME://$DB_USERNAME:$DB_USER_PASSWORD@tcp'($DB_HOST:$DB_PORT)'/$DB_NAME -path migrations up"
+CMD bash -c "sleep 20s && migrate -database  $DB_DRIVER_NAME://$DB_USERNAME:$DB_USER_PASSWORD@tcp'($DB_HOST:$DB_PORT)'/$DB_NAME -path migrations up"
