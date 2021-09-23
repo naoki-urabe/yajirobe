@@ -19,7 +19,6 @@ services:
       .env.prod.front
   task:
     image: ghcr.io/naoki-urabe/yajirobe/task:prod
-    tty: true
     depends_on:
       - mysql_prod
     env_file:
