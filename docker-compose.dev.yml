@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  yajirobe_development:
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile.dev
+    tty: true
+    volumes:
+      - .:/app
+    stdin_open: true
+    depends_on:
+      - mysql_dev
+    ports:
+      - 50298:50298
+      - 58494:58494
+    env_file:
+      .env.dev
+  mysql_dev:
+    image: mysql:8.0.26
+    restart: always
+    ports:
+      - 58524:58524
+    volumes:
+      - ./backend/db/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./backend/db/mysql_data:/var/lib/mysql
+    env_file: .env.dev.db
