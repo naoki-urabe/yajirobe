@@ -4,21 +4,37 @@
     <v-container>
       <Chart />
       <v-row>
+        <v-col cols="2">
+          <v-radio-group
+            v-model="radios"
+            row
+          >
+          <v-radio
+            label="支出"
+            value="payment"
+          ></v-radio>
+          <v-radio
+            label="収入"
+            value="income"
+          ></v-radio>
+        </v-radio-group>
+      </v-col>
         <v-col cols="3">
           <v-text-field label="摘要" v-model="summary" />
         </v-col>
         <v-col cols="3">
           <v-text-field label="収支" v-model="income" />
         </v-col>
-        <v-col cols="3">
+        <v-col cols="2">
           <v-select
             v-model="category"
             :items="categories"
             item-text="category_name"
             item-value="category_code"
+            label="カテゴリ"
           ></v-select>
         </v-col>
-        <v-col cols="3">
+        <v-col cols="2">
           <v-btn @click="registerIncome">submit</v-btn>
         </v-col>
       </v-row>
@@ -50,17 +66,19 @@ export default {
         { text: "取引額", value: "income" },
         { text: "カテゴリ", value: "tag" },
       ],
-      username: ""
+      username: "",
+      radios: "payment",
     };
   },
   methods: {
     registerIncome: async function() {
+      const sign = this.radios === "payment" ? -1 : 1;
       const bodyParameter = {
         dt: new Date(),
         summary: this.summary,
-        income: parseInt(this.income),
+        income: sign * parseInt(this.income),
         tag: this.category,
-        user: this.$auth.user().id
+        user: this.username
       };
       await axios.post("/income/add", bodyParameter);
       const latestIncome = await this.getLatestIncome();
@@ -85,14 +103,14 @@ export default {
     },
     getIncomes: async function() {
       const bodyParameter = {
-        user: this.$auth.user().id
+        user: this.username
       };
       const response = await axios.post("/income/all",bodyParameter);
       return response.data;
     },
     getLatestIncome: async function() {
       const bodyParameter = {
-        user: this.$auth.user().id
+        user: this.username
       };
       const response = await axios.post(
         "/income/latest",bodyParameter
@@ -101,9 +119,9 @@ export default {
     },
   },
   mounted: async function() {
+    this.username = this.$auth.remember();
     this.categories = await this.getAllCategories();
     this.incomes = await this.getIncomes();
-    this.username = this.$auth.remember();
   },
 };
 </script>
