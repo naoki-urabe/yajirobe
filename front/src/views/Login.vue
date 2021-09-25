@@ -32,6 +32,7 @@ export default {
               Id: this.id,
               Pw: this.password,
             },
+            remember: this.id
           })
           .then((response) => {
             this.$auth.user({id: response.data.user})

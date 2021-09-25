@@ -103,7 +103,7 @@ export default {
   mounted: async function() {
     this.categories = await this.getAllCategories();
     this.incomes = await this.getIncomes();
-    this.username = this.$auth.user().id
+    this.username = this.$auth.remember();
   },
 };
 </script>
