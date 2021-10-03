@@ -22,4 +22,4 @@ mysql-backup-prod:
 	bash scripts/backup_prd.sh
 
 mysql-restore-prod:
-	docker exec -i yajirobe_mysql_prod_1 mysql coach_db < ./backend/db/backup/backup.sql
+	docker exec -i yajirobe_mysql_prod_1 mysql yajirobe_db < ./backend/db/backup/backup.sql
