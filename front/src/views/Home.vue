@@ -48,6 +48,7 @@
 <script>
 import axios from "axios";
 import Chart from "@/components/Chart";
+import dayjs from "dayjs"
 export default {
   components: {
     Chart,
@@ -87,9 +88,9 @@ export default {
       this.income = null;
       this.category = "";
     },
-    updateIncomes: async function(latestIncome) {
+    updateIncomes: function(latestIncome) {
       this.incomes.splice(this.incomes.length, 0, {
-        dt: latestIncome.dt,
+        dt: dayjs(latestIncome.dt).format("YYYY-MM-DD"),
         summary: latestIncome.summary,
         income: latestIncome.income,
         tag: latestIncome.tag,
@@ -105,7 +106,16 @@ export default {
       const bodyParameter = {
         user: this.username
       };
-      const response = await axios.post("/income/all",bodyParameter);
+      const response = (await axios.post("/income/all",bodyParameter)).data;
+      for(let i=0;i<response.length;i++){
+        this.incomes.splice(this.incomes.length,0, 
+        {
+          "dt": dayjs(response[i].dt).format("YYYY-MM-DD"),
+          "summary": response[i].summary,
+          "income": response[i].income,
+          "tag": response[i].tag,
+        })
+      }
       return response.data;
     },
     getLatestIncome: async function() {
@@ -121,7 +131,7 @@ export default {
   mounted: async function() {
     this.username = this.$auth.remember();
     this.categories = await this.getAllCategories();
-    this.incomes = await this.getIncomes();
+    this.getIncomes()
   },
 };
 </script>
