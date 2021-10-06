@@ -11,3 +11,4 @@ backend/db/mysql_data
 backend/config.ini
 yajirobe
 backup/
+tmp/
