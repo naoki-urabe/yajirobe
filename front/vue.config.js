@@ -3,7 +3,7 @@ module.exports = {
     'vuetify'
   ],
   devServer: {
-    port: 56294,
+    port: process.env.VUE_APP_FRONT_PORT,
     disableHostCheck: true,
   }
 }
