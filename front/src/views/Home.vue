@@ -19,10 +19,35 @@
           ></v-radio>
         </v-radio-group>
       </v-col>
-        <v-col cols="3">
+      <v-col cols="2">
+        <v-menu
+          v-model="menu"
+          :close-on-content-click="false"
+          :nudge-right="40"
+          transition="scale-transition"
+          offset-y
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="date"
+              label="取引日"
+              prepend-icon="mdi-calendar"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            v-model="date"
+            @input="menu = false"
+          ></v-date-picker>
+        </v-menu>
+      </v-col>
+        <v-col cols="2">
           <v-text-field label="摘要" v-model="summary" />
         </v-col>
-        <v-col cols="3">
+        <v-col cols="2">
           <v-text-field label="収支" v-model="income" />
         </v-col>
         <v-col cols="2">
@@ -56,6 +81,7 @@ export default {
   name: "Home",
   data() {
     return {
+      menu: false,
       summary: "",
       income: null,
       category: "",
@@ -69,13 +95,14 @@ export default {
       ],
       username: "",
       radios: "payment",
+      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
     };
   },
   methods: {
     registerIncome: async function() {
       const sign = this.radios === "payment" ? -1 : 1;
       const bodyParameter = {
-        dt: new Date(),
+        dt: new Date(this.date),
         summary: this.summary,
         income: sign * parseInt(this.income),
         tag: this.category,
