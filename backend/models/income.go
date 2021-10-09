@@ -13,7 +13,7 @@ var getAllIncomesQuery = `
 SELECT * FROM incomes WHERE user = ?;`
 
 var getLatestIncomeQuery = `
-SELECT * FROM incomes WHERE user = ? ORDER BY dt DESC LIMIT 1;
+SELECT * FROM incomes WHERE user = ? ORDER BY id DESC LIMIT 1;
 `
 
 type Income struct {
