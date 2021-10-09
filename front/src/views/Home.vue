@@ -63,6 +63,14 @@
           <v-btn @click="registerIncome">submit</v-btn>
         </v-col>
       </v-row>
+      <v-row>
+        <v-select
+            v-model="month"
+            :items="months"
+            label="対象月"
+            @change="getIncomes"
+          ></v-select>
+      </v-row>
     </v-container>
     <v-card>
       <v-data-table :headers="headers" :items="incomes" :items-per-page="20">
@@ -96,6 +104,7 @@ export default {
       username: "",
       radios: "payment",
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      month: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 7)
     };
   },
   methods: {
@@ -111,17 +120,21 @@ export default {
       await axios.post("/income/add", bodyParameter);
       const latestIncome = await this.getLatestIncome();
       this.updateIncomes(latestIncome);
+      this.months = await this.getAllMonths();
+      this.months.sort().reverse()
       this.summary = "";
       this.income = null;
       this.category = "";
     },
     updateIncomes: function(latestIncome) {
-      this.incomes.splice(this.incomes.length, 0, {
-        dt: dayjs(latestIncome.dt).format("YYYY-MM-DD"),
-        summary: latestIncome.summary,
-        income: latestIncome.income,
-        tag: latestIncome.tag,
-      });
+      if(latestIncome.month === this.month){
+        this.incomes.splice(this.incomes.length, 0, {
+          dt: dayjs(latestIncome.dt).format("YYYY-MM-DD"),
+          summary: latestIncome.summary,
+          income: latestIncome.income,
+          tag: latestIncome.tag,
+        });
+      }
     },
     getAllCategories: async function() {
       const response = await axios.get(
@@ -131,9 +144,11 @@ export default {
     },
     getIncomes: async function() {
       const bodyParameter = {
-        user: this.username
+        user: this.username,
+        month: this.month
       };
-      const response = (await axios.post("/income/all",bodyParameter)).data;
+      this.incomes = []
+      const response = (await axios.post("/income/monthly-incomes",bodyParameter)).data;
       for(let i=0;i<response.length;i++){
         this.incomes.splice(this.incomes.length,0, 
         {
@@ -154,11 +169,20 @@ export default {
       );
       return response.data;
     },
+    getAllMonths: async function() {
+      this.months = []
+      const response = await axios.post(
+        "/income/months"
+      );
+      return response.data;
+    }
   },
   mounted: async function() {
     this.username = this.$auth.remember();
     this.categories = await this.getAllCategories();
-    this.getIncomes()
+    this.months = await this.getAllMonths();
+    this.months.sort().reverse();
+    this.getIncomes();
   },
 };
 </script>

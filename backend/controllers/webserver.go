@@ -17,6 +17,8 @@ func StartWebServer() error {
 	incomeRouter.HandleFunc("/add", addIncome)
 	incomeRouter.HandleFunc("/all", getAllIncomes)
 	incomeRouter.HandleFunc("/latest", getLatestIncome)
+	incomeRouter.HandleFunc("/months", getAllMonths)
+	incomeRouter.HandleFunc("/monthly-incomes", getMonthlyIncome)
 	incomeRouter.Use(validateJWTMiddleware)
 	categoryRouter := router.PathPrefix("/api/category").Subrouter()
 	categoryRouter.HandleFunc("/add", addCategory)

@@ -16,6 +16,14 @@ var getLatestIncomeQuery = `
 SELECT * FROM incomes WHERE user = ? ORDER BY id DESC LIMIT 1;
 `
 
+var getIncomeMonthsQuery = `
+SELECT month FROM incomes GROUP BY month;
+`
+
+var getMonthlyIncomeQuery = `
+SELECT * FROM incomes WHERE user = ? AND month = ?;
+`
+
 type Income struct {
 	Id      int       `db:"id" json:"id"`
 	Dt      time.Time `db:"dt" json:"dt"`
@@ -36,4 +44,12 @@ func GetAllIncomes(user string, incomes *[]Income) {
 
 func GetLatestIncome(user string, income *Income) {
 	Db.Get(income, getLatestIncomeQuery, user)
+}
+
+func GetIncomeMonths(months *[]string) {
+	Db.Select(months, getIncomeMonthsQuery)
+}
+
+func GetMonthlyIncomes(user string,month string,incomes *[]Income) {
+	Db.Select(incomes, getMonthlyIncomeQuery, user,month)
 }
