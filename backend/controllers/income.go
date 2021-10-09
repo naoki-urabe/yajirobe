@@ -89,3 +89,34 @@ var getLatestIncome = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 	w.Write(responseBody)
 
 })
+
+var getAllMonths = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	var months []string
+	models.GetIncomeMonths(&months)
+	responseBody, err := json.Marshal(months)
+	if err != nil {
+		log.Fatal(err)
+	}
+	w.Write(responseBody)
+})
+
+var getMonthlyIncome = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	reqBody, err := ioutil.ReadAll(r.Body)
+	type Cols struct {
+		User string
+		Month string
+	}
+	var c Cols
+	if err := json.Unmarshal(reqBody, &c); err != nil {
+		panic(err)
+	}
+	var incomes []models.Income
+	models.GetMonthlyIncomes(c.User,c.Month,&incomes)
+	responseBody, err := json.Marshal(incomes)
+	if err != nil {
+		log.Fatal(err)
+	}
+	w.Write(responseBody)
+})
