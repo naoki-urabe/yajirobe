@@ -25,16 +25,8 @@ type Income struct {
 	User    string    `db:"user" json:"user"`
 }
 
-type NewIncome struct {
-	Dt      time.Time `db:"dt" json:"dt"`
-	Summary string    `db:"summary" json:"summary"`
-	Income  int       `db:"income" json:"income"`
-	Tag     string    `db:"tag" json:"tag"`
-	User    string    `db:"user" json:"user"`
-}
-
-func AddIncome(newIncome *NewIncome) {
-	Db.MustExec(addIncomeQuery, newIncome.Dt, newIncome.Summary, newIncome.Income, newIncome.Tag, newIncome.User)
+func AddIncome(income *Income) {
+	Db.MustExec(addIncomeQuery, income.Dt, income.Summary, income.Income, income.Tag, income.User)
 }
 
 func GetAllIncomes(user string, incomes *[]Income) {

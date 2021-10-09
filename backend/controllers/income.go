@@ -19,12 +19,12 @@ var addIncome = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	reqBody, err := ioutil.ReadAll(r.Body)
-	var newIncome models.NewIncome
-	if err := json.Unmarshal(reqBody, &newIncome); err != nil {
+	var income models.Income
+	if err := json.Unmarshal(reqBody, &income); err != nil {
 		log.Fatal(err)
 	}
-	models.AddIncome(&newIncome)
-	responseBody, err := json.Marshal(newIncome)
+	models.AddIncome(&income)
+	responseBody, err := json.Marshal(income)
 	if err != nil {
 		log.Fatal(err)
 	}
