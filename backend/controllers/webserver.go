@@ -22,6 +22,6 @@ func StartWebServer() error {
 	categoryRouter.HandleFunc("/add", addCategory)
 	categoryRouter.HandleFunc("/all", getAllCategories)
 	categoryRouter.Use(validateJWTMiddleware)
-	fmt.Printf("Listening port:%s...", config.Config.ApiPort)
+	fmt.Printf("Listening port:%s...\n", config.Config.ApiPort)
 	return http.ListenAndServe(fmt.Sprintf(":%s", config.Config.ApiPort), router)
 }

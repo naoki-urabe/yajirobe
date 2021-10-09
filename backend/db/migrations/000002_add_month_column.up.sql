@@ -1,0 +1,1 @@
+ALTER TABLE incomes ADD month VARCHAR(15) NOT NULL
