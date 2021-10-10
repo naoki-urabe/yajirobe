@@ -2,7 +2,9 @@
   <v-app id="app">
   <p>{{ username }}さんの家計簿</p>
     <v-container>
+      <v-row>
       <Chart />
+      </v-row>
       <v-row>
         <v-col cols="2">
           <v-radio-group
