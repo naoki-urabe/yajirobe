@@ -71,6 +71,17 @@
             @change="getIncomes"
           ></v-select>
       </v-row>
+      <v-row>
+        <v-col cols="4">
+        <h2>収入:{{ totalIncome }}</h2>
+        </v-col>
+        <v-col cols="4">
+        <h2>支出:{{ totalPayment }}</h2>
+        </v-col>
+        <v-col cols="4">
+        <h2>収支:{{ balanceOfPayments }}</h2>
+        </v-col>
+      </v-row>
     </v-container>
     <v-card>
       <v-data-table :headers="headers" :items="incomes" :items-per-page="20">
@@ -104,7 +115,10 @@ export default {
       username: "",
       radios: "payment",
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-      month: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 7)
+      month: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 7),
+      totalPayment: 0,
+      totalIncome: 0,
+      balanceOfPayments: 0
     };
   },
   methods: {
@@ -128,12 +142,18 @@ export default {
     },
     updateIncomes: function(latestIncome) {
       if(latestIncome.month === this.month){
+        if(latestIncome.income > 0){
+          this.totalIncome += latestIncome.income;
+        } else {
+          this.totalPayment += latestIncome.income;
+        }
         this.incomes.splice(this.incomes.length, 0, {
           dt: dayjs(latestIncome.dt).format("YYYY-MM-DD"),
           summary: latestIncome.summary,
           income: latestIncome.income,
           tag: latestIncome.tag,
         });
+        this.balanceOfPayments = this.totalIncome + this.totalPayment;
       }
     },
     getAllCategories: async function() {
@@ -149,7 +169,13 @@ export default {
       };
       this.incomes = []
       const response = (await axios.post("/income/monthly-incomes",bodyParameter)).data;
+      let tmpIncome = 0, tmpPayment = 0;      
       for(let i=0;i<response.length;i++){
+        if(response[i].income > 0){
+          tmpIncome += response[i].income;
+        } else {
+          tmpPayment += response[i].income;
+        }
         this.incomes.splice(this.incomes.length,0, 
         {
           "dt": dayjs(response[i].dt).format("YYYY-MM-DD"),
@@ -158,6 +184,9 @@ export default {
           "tag": response[i].tag,
         })
       }
+      this.totalIncome = tmpIncome;
+      this.totalPayment = tmpPayment;
+      this.balanceOfPayments = tmpIncome + tmpPayment;
       return response.data;
     },
     getLatestIncome: async function() {
