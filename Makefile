@@ -23,3 +23,9 @@ mysql-backup-prod:
 
 mysql-restore-prod:
 	docker exec -i yajirobe_mysql_prod_1 mysql yajirobe_db < ./backend/db/backup/backup.sql
+
+migrate-up:
+	migrate -database 'mysql://root:$(DB_USER_PASSWORD)@tcp($(DB_HOST):$(DB_PORT))/yajirobe_db' -path backend/db/migrations up
+
+migrate-down:
+	migrate -database 'mysql://root:$(DB_USER_PASSWORD)@tcp($(DB_HOST):$(DB_PORT))/yajirobe_db' -path backend/db/migrations down
