@@ -3,9 +3,11 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 	"yajirobe/models"
 )
@@ -56,6 +58,28 @@ var addIncome = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Write(responseBody)
 })
+var editIncome = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	if (*r).Method == "OPTIONS" {
+		return
+	}
+	vars := mux.Vars(r)
+	editId, _ := strconv.Atoi(vars["id"])
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	var income models.Income
+	if err := json.Unmarshal(reqBody, &income); err != nil {
+		panic(err)
+	}
+	income.Month = calcMonth(income.Dt)
+	models.UpdateIncome(&income, editId)
+	fmt.Fprintln(w, vars["id"])
+})
+var deleteIncome = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	deleteId, _ := strconv.Atoi(vars["id"])
+	models.DeleteIncome(deleteId)
+	fmt.Fprintln(w, vars["id"])
+})
 
 var getAllIncomes = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
@@ -105,7 +129,7 @@ var getMonthlyIncome = http.HandlerFunc(func(w http.ResponseWriter, r *http.Requ
 	enableCors(&w)
 	reqBody, err := ioutil.ReadAll(r.Body)
 	type Cols struct {
-		User string
+		User  string
 		Month string
 	}
 	var c Cols
@@ -113,7 +137,7 @@ var getMonthlyIncome = http.HandlerFunc(func(w http.ResponseWriter, r *http.Requ
 		panic(err)
 	}
 	var incomes []models.Income
-	models.GetMonthlyIncomes(c.User,c.Month,&incomes)
+	models.GetMonthlyIncomes(c.User, c.Month, &incomes)
 	responseBody, err := json.Marshal(incomes)
 	if err != nil {
 		log.Fatal(err)

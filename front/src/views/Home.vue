@@ -87,7 +87,92 @@
     </v-container>
     <v-card>
       <v-data-table :headers="headers" :items="incomes" :items-per-page="20">
+        <template #[`item.actions`]="{ item }">
+          <v-icon
+            small
+            @click="editItem(item)"
+          >
+            mdi-pencil
+          </v-icon>
+          <v-icon
+            small
+            @click="deleteItem(item)"
+          >
+            mdi-delete
+          </v-icon>
+        </template>
       </v-data-table>
+      <v-dialog
+        v-model="dialogEdit"
+        max-width="500px"
+      >
+        <v-card>
+          <v-card-title class="justify-center">
+            編集しますか?
+          </v-card-title>
+          <v-card-actions class="justify-center">
+            <v-container>
+            <v-row>
+                <v-col cols="6">
+                <v-text-field v-model="editIncome.summary" label="摘要"/>
+                </v-col>
+                <v-col cols="6">
+                <v-text-field v-model="editIncome.income" label="取引額"/>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col cols="6">
+                <v-text-field v-model="editTime" label="取引日"/>
+                </v-col>
+             <v-col cols="6">
+                <v-select
+                  v-model="editIncome.tag"
+                  :items="categories"
+                  item-text="category_name"
+                  item-value="category_code"
+                  label="タグ名"
+                  no-data-text="タグを設定してください"
+                  :menu-props="{
+                    closeOnClick: true,
+                    closeOnContentClick: true,
+                  }"
+                  :error="isError"
+                  :error-messages="errMsg"
+                />
+              </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                  <v-btn @click="editConfirm">
+                    OK
+                  </v-btn>
+                  <v-btn @click="dialogEdit=false">
+                    キャンセル
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    <v-dialog
+        v-model="dialogDelete"
+        max-width="500px"
+      >
+        <v-card>
+          <v-card-title class="justify-center">
+            削除しますか?
+          </v-card-title>
+          <v-card-actions class="justify-center">
+            <v-btn @click="deleteConfirm">
+              はい
+            </v-btn>
+            <v-btn @click="dialogDelete=false">
+              いいえ
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-card>
   </v-app>
 </template>
@@ -102,6 +187,8 @@ export default {
   name: "Home",
   data() {
     return {
+      dialogEdit: false,
+      dialogDelete: false,
       menu: false,
       summary: "",
       income: null,
@@ -113,7 +200,10 @@ export default {
         { text: "名目", value: "summary" },
         { text: "取引額", value: "income" },
         { text: "カテゴリ", value: "tag" },
+        { text: "編集/削除", value: "actions"}
       ],
+      editIncome: {summary: "", income: 0},
+      editDate: null,
       username: "",
       radios: "payment",
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
@@ -124,6 +214,27 @@ export default {
     };
   },
   methods: {
+    editItem: async function(item) {
+      this.dialogEdit=true;
+      this.editId=item.id;
+      this.editIncome=item;
+      this.editTime=dayjs(this.editIncome.dt).format("YYYY-MM-DD");
+    },
+    deleteItem: async function(item) {
+      this.dialogDelete=true;
+      this.deleteId=item.id;
+    },
+    editConfirm: async function() {
+        const bodyParameters = {dt: dayjs(this.editTime), summary: this.editIncome.summary, income: parseInt(this.editIncome.income), tag: this.editIncome.tag};
+        await axios.post(`/income/edit/${this.editId}`, bodyParameters);
+        this.dialogEdit=false;
+        this.getIncomes();
+    },
+    deleteConfirm: async function() {
+      await axios.get(`/income/delete/${this.deleteId}`);
+      this.dialogDelete=false;
+      this.getIncomes();
+    },
     registerIncome: async function() {
       const sign = this.radios === "payment" ? -1 : 1;
       const bodyParameter = {
@@ -180,6 +291,7 @@ export default {
         }
         this.incomes.splice(this.incomes.length,0, 
         {
+          "id": response[i].id,
           "dt": dayjs(response[i].dt).format("YYYY-MM-DD"),
           "summary": response[i].summary,
           "income": response[i].income,
