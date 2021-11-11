@@ -65,7 +65,7 @@ var editIncome = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	}
 	vars := mux.Vars(r)
 	editId, _ := strconv.Atoi(vars["id"])
-    reqBody, _ := ioutil.ReadAll(r.Body)
+	reqBody, _ := ioutil.ReadAll(r.Body)
 	var income models.Income
 	if err := json.Unmarshal(reqBody, &income); err != nil {
 		panic(err)
