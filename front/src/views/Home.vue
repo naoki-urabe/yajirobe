@@ -219,7 +219,6 @@ export default {
       this.editId=item.id;
       this.editIncome=item;
       this.editTime=dayjs(this.editIncome.dt).format("YYYY-MM-DD");
-      console.log(item);
     },
     deleteItem: async function(item) {
       this.dialogDelete=true;
