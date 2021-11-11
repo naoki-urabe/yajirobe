@@ -2,12 +2,20 @@ package models
 
 import (
 	_ "fmt"
+	"log"
 	"time"
 )
 
 var addIncomeQuery = `
 INSERT INTO incomes (dt,summary,income,tag,user,month) VALUES(?,?,?,?,?,?);
 `
+
+var updateIncomeQuery = `
+UPDATE incomes SET dt=?,summary=?,income=?,tag=?,month=? WHERE id = ?;
+`
+
+var deleteIncomeQuery = `
+DELETE FROM incomes WHERE id = ?;`
 
 var getAllIncomesQuery = `
 SELECT * FROM incomes WHERE user = ?;`
@@ -38,6 +46,20 @@ func AddIncome(income *Income) {
 	Db.MustExec(addIncomeQuery, income.Dt, income.Summary, income.Income, income.Tag, income.User, income.Month)
 }
 
+func UpdateIncome(income *Income, editId int) {
+	_, err := Db.Queryx(updateIncomeQuery, income.Dt, income.Summary, income.Income, income.Tag, income.Month, editId)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+func DeleteIncome(deleteId int) {
+	_, err := Db.Queryx(deleteIncomeQuery, deleteId)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
 func GetAllIncomes(user string, incomes *[]Income) {
 	Db.Select(incomes, getAllIncomesQuery, user)
 }
@@ -50,6 +72,6 @@ func GetIncomeMonths(months *[]string) {
 	Db.Select(months, getIncomeMonthsQuery)
 }
 
-func GetMonthlyIncomes(user string,month string,incomes *[]Income) {
-	Db.Select(incomes, getMonthlyIncomeQuery, user,month)
+func GetMonthlyIncomes(user string, month string, incomes *[]Income) {
+	Db.Select(incomes, getMonthlyIncomeQuery, user, month)
 }

@@ -15,6 +15,8 @@ func StartWebServer() error {
 	router.HandleFunc("/api/user/register", registerUser)
 	incomeRouter := router.PathPrefix("/api/income").Subrouter()
 	incomeRouter.HandleFunc("/add", addIncome)
+	incomeRouter.HandleFunc("/edit/{id}", editIncome)
+	incomeRouter.HandleFunc("/delete/{id}", deleteIncome)
 	incomeRouter.HandleFunc("/all", getAllIncomes)
 	incomeRouter.HandleFunc("/latest", getLatestIncome)
 	incomeRouter.HandleFunc("/months", getAllMonths)
