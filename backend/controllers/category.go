@@ -24,7 +24,11 @@ var addCategory = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) 
 		w.WriteHeader(406)
 		return
 	}
-	models.AddCategory(&category)
+	isSuccess := models.AddCategory(&category)
+	if isSuccess == false {
+		w.WriteHeader(406)
+		return
+	}
 	responseBody, err := json.Marshal(category)
 	if err != nil {
 		log.Fatal(err)

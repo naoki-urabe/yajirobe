@@ -1,6 +1,8 @@
 <template>
+  <v-app id="app">
   <v-form>
     <center>
+      <v-alert v-if="isLogin==='error'" type="error">ログインに失敗しました</v-alert>
       <h1>ログイン</h1>
       <v-container>
         <v-col cols="5">
@@ -12,6 +14,7 @@
       </v-container>
     </center>
   </v-form>
+  </v-app>
 </template>
 <script>
 export default {
@@ -20,6 +23,7 @@ export default {
       registerUserURL: `http://${process.env.VUE_APP_HOST}:${process.env.VUE_APP_FRONT_PORT}/register-user`,
       id: "",
       password: "",
+      isLogin: "",
     };
   },
   methods: {
@@ -39,6 +43,7 @@ export default {
             this.$auth.token(null, response.data.token, false);
           });
       } catch (error) {
+        this.isLogin="error";
         console.log(error);
       }
     },
