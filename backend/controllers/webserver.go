@@ -24,6 +24,8 @@ func StartWebServer() error {
 	incomeRouter.Use(validateJWTMiddleware)
 	categoryRouter := router.PathPrefix("/api/category").Subrouter()
 	categoryRouter.HandleFunc("/add", addCategory)
+	categoryRouter.HandleFunc("/edit/{category}", editCategory)
+	categoryRouter.HandleFunc("/delete/{category}", deleteCategory)
 	categoryRouter.HandleFunc("/all", getAllCategories)
 	categoryRouter.Use(validateJWTMiddleware)
 	fmt.Printf("Listening port:%s...\n", config.Config.ApiPort)
