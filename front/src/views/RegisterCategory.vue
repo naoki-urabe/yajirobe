@@ -1,5 +1,7 @@
 <template>
   <v-app id="app">
+    <v-alert v-if="isSuccess==='success'" type="success">登録に成功しました</v-alert>
+    <v-alert v-if="isSuccess==='error'" type="error">登録に失敗しました</v-alert>
     <v-container>
         <v-row>
         <v-col cols="4">
@@ -106,6 +108,7 @@ export default{
             categories: [],
             dialogEdit: false,
             dialogDelete: false,
+            isSuccess: "",
         };
     },
     methods: {
@@ -132,7 +135,7 @@ export default{
           this.dialogDelete=false;
         },
         register: async function() {
-            const bodyParameters = {
+            try {const bodyParameters = {
                 category_name: this.categoryName,
                 category_code: this.categoryCode
             }
@@ -143,6 +146,11 @@ export default{
             this.categoryName = "";
             this.categoryCode = "";
             await this.getAllCategories();
+            this.isSuccess="success";
+            } catch(err) {
+                this.isSuccess="error";
+                console.log(err);
+            }
         },
         getAllCategories: async function() {
           this.categories = [];

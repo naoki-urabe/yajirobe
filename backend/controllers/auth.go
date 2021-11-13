@@ -102,7 +102,10 @@ func login(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal(reqBody, &user); err != nil {
 		log.Fatal(err)
 	}
-	models.FindUser(&user)
+	isFound := models.IsFoundUser(&user)
+	if isFound == false {
+		w.WriteHeader(401)
+	}
 	privateKey := exportPEMStrToPrivateKey(user.PrivateKey)
 	publicKey := user.PublicKey
 	if user.PrivateKey == "" {

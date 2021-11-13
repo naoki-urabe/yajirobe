@@ -22,8 +22,13 @@ var deleteCategoryQuery = `
 DELETE FROM categories WHERE category_code = ?;
 `
 
-func AddCategory(category *Category) {
-	Db.MustExec(insertCategoryQuery, category.CategoryCode, category.CategoryName)
+func AddCategory(category *Category) bool {
+	_, err := Db.Queryx(insertCategoryQuery, category.CategoryCode, category.CategoryName)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	return true
 }
 
 func EditCategory(category *Category, editId string) {

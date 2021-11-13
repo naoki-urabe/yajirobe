@@ -25,6 +25,10 @@ func registerUser(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal(reqBody, &user); err != nil {
 		log.Fatal(err)
 	}
+	if user.Id == "" || user.Pw == "" {
+		w.WriteHeader(406)
+		return
+	}
 	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
 	publicKey := &privateKey.PublicKey
 	privateKeyPemStr := exportPrivateKeyAsPEMStr(privateKey)
@@ -34,7 +38,11 @@ func registerUser(w http.ResponseWriter, r *http.Request) {
 	user.Pw = fmt.Sprintf("%x", sha256)
 	user.PrivateKey = privateKeyPemStr
 	user.PublicKey = publicKeyPemStr
-	models.InsertUser(&user)
+	isSuccess := models.InsertUser(&user)
+	if isSuccess == false {
+		w.WriteHeader(406)
+		return
+	}
 	responseBody, err := json.Marshal(user)
 	if err != nil {
 		log.Fatal(err)

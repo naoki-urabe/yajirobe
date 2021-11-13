@@ -3,6 +3,7 @@ package models
 import (
 	"crypto/sha256"
 	"fmt"
+	"log"
 )
 
 type User struct {
@@ -18,13 +19,23 @@ INSERT INTO users VALUES(?,?,?,?);
 var findUser = `
 SELECT * FROM users WHERE id = ? AND pw = ? LIMIT 1;`
 
-func InsertUser(user *User) {
-	Db.MustExec(insertUserQuery, user.Id, user.Pw, user.PrivateKey, user.PublicKey)
+func InsertUser(user *User) bool {
+	_, err := Db.Queryx(insertUserQuery, user.Id, user.Pw, user.PrivateKey, user.PublicKey)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	return true
 }
 
-func FindUser(user *User) {
+func IsFoundUser(user *User) bool {
 	p := []byte(user.Pw)
 	sha256 := sha256.Sum256(p)
 	user.Pw = fmt.Sprintf("%x", sha256)
-	Db.Get(user, findUser, user.Id, user.Pw)
+	err := Db.Get(user, findUser, user.Id, user.Pw)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	return true
 }
