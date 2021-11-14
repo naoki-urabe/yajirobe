@@ -50,6 +50,10 @@ var addIncome = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal(reqBody, &income); err != nil {
 		log.Fatal(err)
 	}
+	if income.Income == 0 || income.Summary == "" || income.Tag == "" {
+		w.WriteHeader(406)
+		return
+	}
 	income.Month = calcMonth(income.Dt)
 	models.AddIncome(&income)
 	responseBody, err := json.Marshal(income)

@@ -192,6 +192,7 @@ export default {
       menu: false,
       summary: "",
       income: null,
+      months: [],
       category: "",
       categories: [],
       incomes: [],
@@ -203,14 +204,16 @@ export default {
         { text: "編集/削除", value: "actions"}
       ],
       editIncome: {summary: "", income: 0},
-      editDate: null,
+      editTime: null,
       username: "",
       radios: "payment",
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
       month: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 7),
       totalPayment: 0,
       totalIncome: 0,
-      balanceOfPayments: 0
+      balanceOfPayments: 0,
+      errMsg: "",
+      isError: false,
     };
   },
   methods: {
