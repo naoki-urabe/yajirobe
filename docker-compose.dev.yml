@@ -11,15 +11,15 @@ services:
     depends_on:
       - mysql_dev
     ports:
-      - 57245:57245
-      - 58494:58494
+      - $API_PORT:$API_PORT
+      - $VUE_APP_FRONT_PORT:$VUE_APP_FRONT_PORT
     env_file:
-      .env.dev
+        .env
   mysql_dev:
     image: mysql:8.0.26
     restart: always
     ports:
-      - 58524:58524
+        - $DB_PORT:$DB_PORT
     volumes:
       - ./backend/db/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./backend/db/mysql_data:/var/lib/mysql
