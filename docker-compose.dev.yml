@@ -11,7 +11,7 @@ services:
     depends_on:
       - mysql_dev
     ports:
-      - 50298:50298
+      - 57245:57245
       - 58494:58494
     env_file:
       .env.dev
