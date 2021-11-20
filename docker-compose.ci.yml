@@ -9,8 +9,6 @@ services:
     stdin_open: true
     volumes:
       - ./backend:/app
-    ports:
-      - 50534:50534
     env_file:
       .env.prod.api
   front:
@@ -21,8 +19,6 @@ services:
     tty: true
     volumes:
       - ./front:/app
-    ports:
-      - 56294:56294
     env_file:
       .env.prod.front
   task:
