@@ -7,14 +7,14 @@ services:
     depends_on:
       - mysql_prod
     ports:
-      - 50534:50534
+      - $API_PORT:$API_PORT
     env_file:
       .env.prod.api
   front_prod:
     image: ghcr.io/naoki-urabe/yajirobe/front:prod
     tty: true
     ports:
-      - 56294:56294
+      - $VUE_APP_FRONT_PORT:$VUE_APP_FRONT_PORT
     env_file:
       .env.prod.front
   task:
@@ -27,7 +27,7 @@ services:
     image: mysql:8.0.26
     restart: always
     ports:
-      - 54923:54923
+      - $DB_PORT:$DB_PORT
     volumes:
       - ./backend/db/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./backend/db/mysql_data:/var/lib/mysql
