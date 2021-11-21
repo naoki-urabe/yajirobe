@@ -86,7 +86,7 @@
       </v-row>
     </v-container>
     <v-card>
-      <v-data-table :headers="headers" :items="incomes" :items-per-page="20">
+      <v-data-table :headers="headers" :items="incomes" :items-per-page="20" :options="pagination">
         <template #[`item.actions`]="{ item }">
           <v-icon
             small
@@ -214,6 +214,10 @@ export default {
       balanceOfPayments: 0,
       errMsg: "",
       isError: false,
+      pagination: {
+        sortBy: ["dt"],
+        sortDesc:[true]
+      }
     };
   },
   methods: {
