@@ -47,9 +47,9 @@ jobs:
           echo VUE_APP_FRONT_PORT=56294 >> .env.prod.front
       - name: Set .env
         run: |
-          echo API_PORT=50534
-          echo VUE_APP_FRONT_PORT=56294
-          echo DB_PORT=54923
+          echo API_PORT=50534 >> .env
+          echo VUE_APP_FRONT_PORT=56294 >> .env
+          echo DB_PORT=54923 >> .env
       - name: Log in to Github packages
         run: echo ${GITHUB_TOKEN} | docker login ghcr.io -u ${GITHUB_ACTOR} --password-stdin
         env:
