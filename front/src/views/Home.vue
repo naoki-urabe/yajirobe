@@ -84,7 +84,6 @@
         <h2>収支:{{ balanceOfPayments }}</h2>
         </v-col>
       </v-row>
-    </v-container>
     <v-card>
       <v-data-table :headers="headers" :items="incomes" :items-per-page="20" :options="pagination">
         <template #[`item.actions`]="{ item }">
@@ -174,6 +173,7 @@
         </v-card>
       </v-dialog>
     </v-card>
+    </v-container>
   </v-app>
 </template>
 <script>
